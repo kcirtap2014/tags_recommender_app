@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block corps %}
+<div class="container " >
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+
+      <form action="{{url_for("result")}}" method = "POST">
+         <fieldset>
+            <legend > <img src="{{url_for('static', filename='image/so-logo.png')}}" alt="Stack Overflow"> </legend>
+            <div id="title" class="title">{{ form.title(placeholder="Title goes here...") }}</div>
+            {{ form.hidden_tag() }}
+
+            <div id="wmd-button-bar"></div>
+            <textarea id="wmd-input" class="wmd-input" placeholder="Ask your question here..."></textarea>
+            <div id="wmd-preview" class="wmd-panel wmd-preview"></div>
+
+            <script>
+                var converter = Markdown.getSanitizingConverter();
+                var editor = new Markdown.Editor(converter);
+                editor.run();
+            </script>
+
+               {{ form.submit }}
+            </div>
+
+         </fieldset>
+      </form>
+     </div>
+    </div>
+</div>
+{% endblock %}
