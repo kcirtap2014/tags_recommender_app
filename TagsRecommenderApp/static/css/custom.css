@@ -1,7 +1,7 @@
 form {
     margin: 0 auto;
-    width: 600px;
-    height: 400px;
+    width: 1000px;
+    height: 600px;
     font-size: 20px;
     text-align: justify;
     font-family: 'PT Serif', serif;
@@ -12,6 +12,7 @@ textarea#flask-pagedown-pagedown {
     font-size: 20px;
     width: -webkit-fill-available;
     margin-top: 20px;
+    height: 400px;
 }
 
 .wmd-button > span {
@@ -79,6 +80,7 @@ div#title_result {
     border-style: solid;
     font-size: 20px;
     padding: 5px;
+    height: 20px;
 }
 
 textarea#body_result {
@@ -88,6 +90,7 @@ textarea#body_result {
     margin-top: 20px;
     color: black;
     font-family: inherit;
+    height: 400px;
 }
 
 input[type="checkbox"] {
@@ -117,4 +120,22 @@ legend {
     font-size: 40px;
     font-weight: bolder;
     text-align: center;
+}
+
+/* Pattern styles */
+.left-half {
+  float: left;
+  width: 49%;
+}
+.right-half {
+  float: left;
+  margin-left: 18px;
+  height: 430px;
+  width: 49%;
+}
+
+#box{
+  overflow: scroll;
+  border-radius:10px;
+  margin-bottom: 20px;
 }

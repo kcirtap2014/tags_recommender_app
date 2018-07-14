@@ -11,8 +11,17 @@
             <div id="title" class="title">{{ form.title(placeholder="Title goes here...") }}</div>
 
             {{ form.hidden_tag() }}
-            {{ form.pagedown(only_input=True, rows=10, placeholder="Ask your question here (in mark-up language)...") }}
-            {{ form.pagedown(only_preview=True) }}
+            <div class="container row" >
+
+                    <div id="box" class="left-half">
+                        {{ form.pagedown(only_input=True, placeholder="Ask your question here (in mark-up language)...") }}
+                    </div>
+                     <div id="box"  class="right-half">
+                        {{ form.pagedown(only_preview=True) }}
+                    </div>
+            </div>
+
+            </div>
             {{ form.submit }}
             </div>
 
