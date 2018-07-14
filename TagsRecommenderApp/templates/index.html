@@ -9,20 +9,12 @@
          <fieldset>
             <legend > <img src="{{url_for('static', filename='image/so-logo.png')}}" alt="Stack Overflow"> </legend>
             <div id="title" class="title">{{ form.title(placeholder="Title goes here...") }}</div>
+
             {{ form.hidden_tag() }}
-
-            <div id="wmd-button-bar"></div>
-            <textarea id="wmd-input" class="wmd-input" placeholder="Ask your question here..."></textarea>
-            <div id="wmd-preview" class="wmd-panel wmd-preview"></div>
-
-            <script>
-                var converter = Markdown.getSanitizingConverter();
-                var editor = new Markdown.Editor(converter);
-                editor.run();
-            </script>
-
-               {{ form.submit }}
+            {{ form.pagedown(only_input=True, rows=10, placeholder="Ask your question here (in mark-up language)...") }}
+            {{ form.submit }}
             </div>
+
 
          </fieldset>
       </form>

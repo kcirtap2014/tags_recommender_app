@@ -4,9 +4,12 @@
 from flask import Flask, request, redirect, render_template
 from flask import url_for, flash, session
 import logging as lg
+from flask_pagedown import PageDown
+
 import pdb
 
 app = Flask(__name__)
+pagedown = PageDown(app)
 
 app.config.from_object('config')
 #from .utils import airport_list, predict, load_data
@@ -50,9 +53,7 @@ def result():
 
     title= request.form["title"]
     lg.warning(title)
-    pdb.set_trace()
-    body = request.form["wmd-input"]
-    wmd_preview = request.form["wmd-preview"]
+    body = request.form["pagedown"]
     lg.warning(body)
     # predict
 
