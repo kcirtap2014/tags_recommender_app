@@ -5,8 +5,7 @@ from flask import Flask, request, redirect, render_template
 from flask import url_for, flash, session
 import logging as lg
 from flask_pagedown import PageDown
-
-import pdb
+from flask_misaka import markdown
 
 app = Flask(__name__)
 pagedown = PageDown(app)
@@ -54,7 +53,9 @@ def result():
     title= request.form["title"]
     lg.warning(title)
     body = request.form["pagedown"]
-    lg.warning(body)
+
+    content = markdown(body)
+    lg.warning(content)
     # predict
 
     #y_pred = int(y_pred[0])

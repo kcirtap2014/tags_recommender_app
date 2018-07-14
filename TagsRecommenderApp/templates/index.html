@@ -12,6 +12,7 @@
 
             {{ form.hidden_tag() }}
             {{ form.pagedown(only_input=True, rows=10, placeholder="Ask your question here (in mark-up language)...") }}
+            {{ form.pagedown(only_preview=True) }}
             {{ form.submit }}
             </div>
 
