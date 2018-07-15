@@ -1,6 +1,6 @@
 form {
     margin: 0 auto;
-    width: 1000px;
+    width: 800px;
     height: 600px;
     font-size: 20px;
     text-align: justify;
@@ -129,7 +129,7 @@ legend {
 }
 .right-half {
   float: left;
-  margin-left: 18px;
+  margin-left: 10px;
   height: 430px;
   width: 49%;
 }
