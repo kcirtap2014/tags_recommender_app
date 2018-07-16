@@ -10,7 +10,8 @@ if os.environ.get('DATABASE_URL') is None:
         'origin': 'sqlite:///' + os.path.join(basedir, 'origin.db'),
         'dest': 'sqlite:///' + os.path.join(basedir, 'dest.db')
     }
-    DATABASE_URI = os.path.join(basedir, 'TagsRecommenderApp/static/db/')
+    DATABASE_URI = os.path.join(basedir,
+                        'TagsRecommenderApp/static/db/')
 
 else:
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
