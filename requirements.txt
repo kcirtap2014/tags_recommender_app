@@ -25,3 +25,4 @@ sklearn==0.0
 SQLAlchemy==1.2.9
 Werkzeug==0.14.1
 WTForms==2.2.1
+gunicorn==19.8.1
