@@ -33,9 +33,8 @@ def result():
     title= request.form["title"]
     pagedown_text = request.form["pagedown"]
     markdown_content = markdown(pagedown_text)
-    vect = train_feature()
     # run predict
-    rec_tags = run_predict(title, markdown_content, vect)
+    rec_tags = run_predict(title, markdown_content)
 
     return render_template('result.html', title = title,
                             form=form, pagedown_text=pagedown_text,
