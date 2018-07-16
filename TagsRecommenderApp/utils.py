@@ -5,22 +5,22 @@ from nltk import regexp_tokenize, pos_tag
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.externals import joblib
+from sklearn.feature_extraction.text import TfidfVectorizer
 import re
-
 import config as CONFIG
 import pdb
 
-#from .models import load_joblib, load_data, Airports, Origins, Dests
-class LemmaTokenizer(object):
+class Vectorizer(object):
     """
     tokenize text
     """
-    def __init__(self):
+    def __init__(self, params):
         self.wnl = WordNetLemmatizer()
         self.stopwords = stopwords
         self.regexp_tokenize = regexp_tokenize
+        self.params = params
 
-    def __call__(self, doc):
+    def LemmaTokenizer(self, doc):
         if pd.notnull(doc):
             # add words to stoplist, previously punctuations have been removed,
             # so we should do the same for the stoplist
@@ -77,13 +77,26 @@ class LemmaTokenizer(object):
             return data.lower()
         return data
 
-def feature_generator(X, LemmaTokenizer):
-    pdb.set_trace()
-    vect = joblib.load(CONFIG.DATABASE_URI_VECT)
+    def fit(self, X_train):
+        self.params["tokenizer"] = self.LemmaTokenizer
+        self.vect = TfidfVectorizer(**self.params)
+        self.vect.fit(X_train)
 
-    X_vect = vect.transform(X)
+    def transform(self, X_input):
+        return self.vect.transform(X_input)
 
-    return X_vect
+def feature_generator(vect, df_X_input):
+    X_trans = vect.transform(df_X_input)
+
+    return X_trans
+
+def train_feature():
+    params = joblib.load(CONFIG.DATABASE_URI + "params_vectorizer.pk")
+    vect = Vectorizer(params)
+    X_train = pd.read_csv(CONFIG.DATABASE_URI + "X_train.csv")
+    vect.fit(X_train['0'])
+
+    return vect
 
 def load_model():
     model = joblib.load(CONFIG.DATABASE_URI_MODEL)
@@ -120,14 +133,21 @@ def get_best_tags(y_pred, y_pred_proba, n_tags=1):
 
     return y_pred_copy
 
-def run_predict(title, body):
+def load_binarizer():
+    binarizer = joblib.load(CONFIG.DATABASE_URI + "binarizer.pk")
 
-    X = title + body
-    X_vect = feature_generator(X, LemmaTokenizer)
-    pdb.set_trace()
+    return binarizer
+
+def run_predict(title, body, vect):
+
+    X = str(title) + " " + str(body)
+    df_X = pd.Series([X])
+    X_trans = feature_generator(vect, df_X)
     model = load_model()
-    y_pred = model.predict(X_vect)
-    y_pred_proba  = model.decision_function(X_vect)
-    y_pred_new = get_best_tags(y_pred_svm, y_pred_proba, n_tags=2)
+    binarizer = load_binarizer()
+    y_pred = model.predict(X_trans)
+    y_pred_proba  = model.decision_function(X_trans)
+    y_pred_new = get_best_tags(y_pred, y_pred_proba, n_tags=2)
+    rec_tags = binarizer.inverse_transform(y_pred_new)
 
-    return y_pred_new
+    return rec_tags
