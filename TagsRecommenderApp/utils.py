@@ -2,26 +2,20 @@ import pandas as pd
 import logging as lg
 import numpy as np
 import config as CONFIG
-from .lemma_tokenizer import LemmaTokenizer
-import pdb
+from sklearn.externals import joblib
+import pandas as pd
+import numpy as np
+from lemma_tokenizer import LemmaTokenizer
 
 def feature_generator(df_X_input):
-    LemmaTokenizer = LemmaTokenizer()
-    vect = joblib.load(CONFIG.DATABASE_URI + "vectorizer_lemma.pk")
+    lt = LemmaTokenizer()
+    vect = joblib.load(CONFIG.DATABASE_URI + "vectorizer_lemma2.pk")
     X_trans = vect.transform(df_X_input)
 
     return X_trans
 
-def train_feature():
-    params = joblib.load(CONFIG.DATABASE_URI + "params_vectorizer.pk")
-    vect = Vectorizer(params)
-    X_train = pd.read_csv(CONFIG.DATABASE_URI + "X_train.csv")
-    vect.fit(X_train['0'])
-
-    return vect
-
 def load_model():
-    model = joblib.load(CONFIG.DATABASE_URI_MODEL)
+    model = joblib.load(CONFIG.DATABASE_URI+ "OVR_SVM_model.sav")
 
     return model
 
@@ -70,8 +64,8 @@ def run_predict(title, body):
     # load model for prediction
     model = load_model()
     y_pred = model.predict(X_trans)
-    y_pred_proba  = model.decision_function(X_trans)
-    y_pred_new = get_best_tags(y_pred, y_pred_proba, n_tags=2)
+    y_pred_proba  = model.predict_proba(X_trans)
+    y_pred_new = get_best_tags(y_pred, y_pred_proba)
 
     # load binarizer to convert prediction to tags
     binarizer = load_binarizer()
