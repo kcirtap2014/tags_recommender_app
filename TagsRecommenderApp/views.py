@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, jsonify
 from flask import url_for, flash, session
 import logging as lg
 from flask_pagedown import PageDown
@@ -30,19 +30,19 @@ def index():
     return render_template('index.html',
                             form = form, website_title=website_title)
 
-@app.route('/result', methods= ['GET','POST'])
+@app.route('/result', methods= ['POST'])
 def result():
     form = RecommenderForm()
     website_title = "StackOverflow"
     title= request.form["title"]
     pagedown_text = request.form["pagedown"]
-    lg.warning(len(title))
-    lg.warning(len(pagedown_text))
     markdown_content = markdown(pagedown_text)
     # run predict
     rec_tags = run_predict(title, markdown_content)[0]
 
-    return render_template('result.html', website_title=website_title,
-                            title = title, form=form,
-                            pagedown_text=pagedown_text,
-                            rec_tags=rec_tags)
+    return jsonify({'rec_tags': rec_tags})
+
+    #return render_template('result.html', website_title=website_title,
+    #                        title = title, form=form,
+    #                        pagedown_text=pagedown_text,
+    #                        rec_tags=rec_tags)
